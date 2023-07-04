@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="fonts/fontawesome-free-6.3.0-web/css/all.css">
+    <title>Document</title>
+</head>
+<body>
+    <div class="main">
+        <div class="musicPlayback">
+            <div class="switch">Switch</div>
+            <div class="musicPlayback__songName">
+                <h4>Now playing:</h4>
+                <h2></h2>
+            </div>
+            <img src="" alt="" class="musicPlayback__songImage">
+            <div class="musicPlayback__control">
+                <div class="control__return">
+                    <i class="fas fa-redo"></i>
+                </div>
+                <div class="control__previousSong">
+                    <i class="fas fa-step-backward"></i>
+                </div>
+                <div class="control__playSong">
+                    <div class="playSong__background">
+                        <i class="fas icon-pause"></i>
+                        <i class="fas fa-play icon-play"></i>
+                    </div>
+                </div>
+                <div class="control__nextSong">
+                    <i class="fas fa-step-forward"></i>
+                </div>
+                <div class="control__random">
+                    <i class="fas fa-random"></i>
+                </div>
+            </div>
+            <audio src="" id='audio'></audio>
+            <div class="musicPlayback__bar">
+                <div class="musicPlayback__volume">
+                    <input type="range" value='20' step="1" max="20" min="0">
+                </div>
+                <div class="musicPlayback__process">
+                    <input type="range" value='0' step="1" max="100" min="0">
+                    <div class="musicPlayback__time">
+                        <div class="timeCurrent">00:00</div>
+                        <div class="timeEnd">00:00</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="listSong listSong--1"></div>
+    </div>
+</body>
+<script src="main.js"></script>
+</html>

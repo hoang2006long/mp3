@@ -1,0 +1,334 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    user-select: none;
+}
+
+
+html {
+    font-family: "Poppins", sans-serif;
+}
+
+.switch {
+    position: absolute;
+    cursor: pointer;
+    box-shadow: black 0 0 4px;
+    border-radius: 10px;
+    padding: 5px
+}
+
+.switch:hover {
+    opacity: 0.8;
+}
+
+.switch--click {
+    padding: 4px;
+}
+
+.main ,.musicPlayback, .musicPlayback__songName {
+    display: flex;
+    flex-direction: column;
+}
+
+.main {
+    width: 800px;
+    margin: auto;
+    margin-top: 50px;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.main--2 {
+    flex-direction: column !important;
+    display: flex !important;
+    align-items: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    overflow: visible;
+    width: 100% !important;
+}
+
+.musicPlayback,
+.listSong,
+.listSong .song{
+    box-shadow: black 0 0 4px;
+    padding: 10px;
+    border-radius: 10px;
+    width: 384px;
+}
+
+.musicPlayback {
+    background-color: #efeef0;
+}
+
+.musicPlayback--2{
+    position: fixed;
+    top: 20px;
+    z-index: 1;
+}
+
+.musicPlayback--scroll {
+    top: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    width: 400px;
+}
+
+.musicPlayback__songName {
+    margin: auto;
+    color :#ed194b;
+    font-size: 14px;
+}
+
+.musicPlayback__songName h2 {
+    display: block;
+    margin: auto;
+    color: black;
+    font-size: 30px;
+    margin: 10px 0 10px 0;
+    text-align: center;
+}
+
+.musicPlayback__songName h4 {
+    text-align: center;
+    font-size: 13.5px;
+}
+
+.musicPlayback__songImage {
+    width: 224px;
+    height: 224px;
+    border-radius: 1000px;
+    margin: 0 auto;
+}
+
+.musicPlayback__control {
+    display: flex;
+    justify-content: space-around;
+    height: 35px;
+    align-items: center;
+    margin-top: 20px;
+    margin-bottom: 30px;
+}
+
+.control__return,
+.control__previousSong,
+.control__nextSong ,
+.control__random {
+    cursor: pointer;
+    color: #5f5e60
+}
+
+.control__return i,
+.control__previousSong i,
+.control__nextSong i,
+.control__random i {
+    font-size: 20px;
+}
+
+
+
+.control__playSong,
+.control__playSong .playSong__background {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.control__playSong .playSong__background{
+    background-color: #ed194b;
+    border-radius: 100px;
+    width :50px;
+    height: 50px;
+    cursor: pointer;
+}
+
+.control__playSong .playSong__background i {
+    color: #fff;
+    font-size: 25px;
+}
+
+.control__playSong .playSong__background:hover {
+    box-shadow: #ed194b 0 0 5px;
+    color: aliceblue;
+    text-align: center;
+}
+
+input[type=range] {
+    -webkit-appearance: none;
+    margin: 10px 0;
+    width: 65%;
+  }
+  input[type=range]:focus {
+    outline: none;
+  }
+  input[type=range]::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 5px;
+    cursor: pointer;
+    box-shadow: 0px 0px 0px #000000;
+    background: #cbc6d1;
+    border-radius: 1px;
+    border: 0px solid #000000;
+  }
+  input[type=range]::-webkit-slider-thumb {
+    box-shadow: 0px 0px 0px #771CFF;
+    border: 0px solid #2497E3;
+    height: 14px;
+    width: 14px;
+    border-radius: 14px;
+    background: #ED194B;
+    cursor: pointer;
+    -webkit-appearance: none;
+    margin-top: -4.5px;
+  }
+  input[type=range]:focus::-webkit-slider-runnable-track {
+    background: #cbc6d1;
+  }
+  input[type=range]::-moz-range-track {
+    width: 100%;
+    height: 5px;
+    cursor: pointer;
+    box-shadow: 0px 0px 0px #000000;
+    background: #cbc6d1;
+    border-radius: 1px;
+    border: 0px solid #000000;
+  }
+  input[type=range]::-moz-range-thumb {
+    box-shadow: 0px 0px 0px #771CFF;
+    border: 0px solid #2497E3;
+    height: 14px;
+    width: 14px;
+    border-radius: 14px;
+    background: #ED194B;
+    cursor: pointer;
+  }
+  input[type=range]::-ms-track {
+    width: 100%;
+    height: 5px;
+    cursor: pointer;
+    background: transparent;
+    border-color: transparent;
+    color: transparent;
+  }
+  input[type=range]::-ms-fill-lower {
+    background: #cbc6d1;
+    border: 0px solid #000000;
+    border-radius: 2px;
+    box-shadow: 0px 0px 0px #000000;
+  }
+  input[type=range]::-ms-fill-upper {
+    background: #cbc6d1;
+    border: 0px solid #000000;
+    border-radius: 2px;
+    box-shadow: 0px 0px 0px #000000;
+  }
+  input[type=range]::-ms-thumb {
+    margin-top: 1px;
+    box-shadow: 0px 0px 0px #771CFF;
+    border: 0px solid #2497E3;
+    height: 14px;
+    width: 14px;
+    border-radius: 14px;
+    background: #ED194B;
+    cursor: pointer;
+  }
+  input[type=range]:focus::-ms-fill-lower {
+    background: #cbc6d1;
+  }
+  input[type=range]:focus::-ms-fill-upper {
+    background: #cbc6d1;
+  }
+  
+.musicPlayback__bar {
+    display: flex;
+    justify-content: space-between;
+}
+
+.musicPlayback__volume input[type=range]{
+    width: 70px;
+}
+
+.musicPlayback__process input[type=range]{
+    width: 280px;
+}
+
+.musicPlayback__time {
+    display: flex;
+    justify-content: space-between;
+    font-weight: 600;
+    font-size: 15px;
+}
+
+.listSong {
+    overflow-y: scroll;
+    background-color: #efeef0;
+}
+.listSong::-webkit-scrollbar {
+    display: none;
+}
+
+.listSong--2 {
+    box-shadow: none !important;
+    padding: 0;
+    overflow-y:initial !important;
+    margin-top: 475px;
+    margin-bottom: 20px;
+}
+
+.listSong--1{
+    height: 450px
+}
+
+.listSong .song {
+    display: flex;
+    margin-bottom: 10px;
+    cursor: pointer;
+    width: 100%;
+    box-shadow: black 0 0 4px;
+    background-color: #fff;
+}
+
+.listSong .song:hover {
+    background-color: #dbdbdb;
+}
+
+.listSong .moreInformation,
+.listSong .image,
+.listSong .content{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.listSong .image {
+    width: 25%;
+}
+
+.listSong .image img {
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 100px;
+}
+
+.listSong .content {
+    width: 60%;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-left: 18px
+}
+
+.content .content__name {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.content .content__author {
+    font-size: 15px;
+    line-height: 26px;
+}
+
+.listSong .moreInformation{
+    width: 15%;
+}
