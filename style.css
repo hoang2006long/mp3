@@ -126,7 +126,9 @@ html {
     font-size: 20px;
 }
 
-
+.activeBtn {
+    color: #ed194b;
+}
 
 .control__playSong,
 .control__playSong .playSong__background {
