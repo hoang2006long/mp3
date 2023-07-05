@@ -158,7 +158,8 @@ const app = {
             if (_this.isPlaying) {    
                 whenPlay()
             } else {        
-                whenPause()              
+                whenPause()  
+                         
             }
 
             // khi song được play
@@ -191,35 +192,12 @@ const app = {
                 if (endTime != 'NaN:NaN') {
                     timeEnd.textContent = endTime
                 }
-                if(audio.currentTime == audio.duration) {
-                    if(_this.isReturn== false) {
-                        nextSong()
-                    }
-                }
             }
         }
-        
-        // khi tiến độ bài hát thay đổi
-        audio.ontimeupdate = function() {
-            const currentTime = timeFormat(audio.currentTime)
-            timeCurrent.textContent = currentTime
-            const endTime = timeFormat(audio.duration)
-
-            if (audio.duration) {
-                const progressPercent = Math.floor(audio.currentTime / audio.duration * 100)
-                progress.value = progressPercent
-            }
-            // update thời gian của bài hát
-            function timeFormat(seconds) {
-                let minute = Math.floor(seconds / 60);
-                let second = Math.floor(seconds % 60);
-                minute = minute < 10 ? "0" + minute : minute;
-                second = second < 10 ? "0" + second : second;
-                return minute + ":" + second;
-            }
-            if (endTime != 'NaN:NaN') {
-                timeEnd.textContent = endTime
-            }
+        audio.onended = function() {
+            if(_this.isReturn == false | _this.isRandom == false) {
+                nextSong()
+            }  
         }
         
         // xử lý khi tua bài hát
@@ -272,12 +250,13 @@ const app = {
         
         // Xử lý khi random bài hát
         function randomSong() {
-            let newIndex
+            var newIndex
             do {
                 newIndex = Math.floor(Math.random() * _this.songs.length)
             } while(newIndex ==_this.currentIndex)
             _this.currentIndex = newIndex
             _this.loadCurrentSong()
+            console.log(123)
             whenPause()
         }
         randomBtn.onclick = function() {
@@ -289,15 +268,15 @@ const app = {
             if (_this.isRandom) {
                 nextBtn.onclick = randomSong
                 previousBtn.onclick = randomSong
-                audio.onended = randomSong    
+                audio.onended = randomSong
             } else {
                 nextBtn.onclick = nextSong
                 previousBtn.onclick = previousSong
-                audio.onended = nextSong    
             }
         }
     },
-    start: function() {
+    start: function() {      
+       
         // nút đổi giao diện
         this.switchBtn()
 
@@ -312,6 +291,8 @@ const app = {
 
         // render playlist bài hát
         this.renderPlayList()
+
     }
 }
+
 app.start()
