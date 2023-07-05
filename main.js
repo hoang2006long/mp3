@@ -199,6 +199,29 @@ const app = {
             }
         }
         
+        // khi tiến độ bài hát thay đổi
+        audio.ontimeupdate = function() {
+            const currentTime = timeFormat(audio.currentTime)
+            timeCurrent.textContent = currentTime
+            const endTime = timeFormat(audio.duration)
+
+            if (audio.duration) {
+                const progressPercent = Math.floor(audio.currentTime / audio.duration * 100)
+                progress.value = progressPercent
+            }
+            // update thời gian của bài hát
+            function timeFormat(seconds) {
+                let minute = Math.floor(seconds / 60);
+                let second = Math.floor(seconds % 60);
+                minute = minute < 10 ? "0" + minute : minute;
+                second = second < 10 ? "0" + second : second;
+                return minute + ":" + second;
+            }
+            if (endTime != 'NaN:NaN') {
+                timeEnd.textContent = endTime
+            }
+        }
+        
         // xử lý khi tua bài hát
         progress.oninput = function(e) {
             const seekTime = e.target.value * audio.duration / 100
@@ -239,17 +262,14 @@ const app = {
             returnBtnIcon.classList.toggle('activeBtn', _this.isReturn) 
             randomBtnIcon.classList.remove('activeBtn') 
             if (_this.isReturn) {
-                console.log(123)
-                audio.ontimeupdate = function() {
-                    audio.onended = function() {
-                        audio.play() 
-                    } 
-                }         
+                audio.onended = function() {
+                    audio.play() 
+                } 
             } else {
                 audio.onended = nextSong
-            }
-        }
-
+            }       
+        }    
+        
         // Xử lý khi random bài hát
         function randomSong() {
             let newIndex
@@ -265,18 +285,15 @@ const app = {
             _this.isReturn = false
             randomBtnIcon.classList.toggle('activeBtn', _this.isRandom)    
             returnBtnIcon.classList.remove('activeBtn')    
+        
             if (_this.isRandom) {
                 nextBtn.onclick = randomSong
                 previousBtn.onclick = randomSong
-                audio.ontimeupdate = function() {
-                    audio.onended = randomSong    
-                }
+                audio.onended = randomSong    
             } else {
                 nextBtn.onclick = nextSong
                 previousBtn.onclick = previousSong
-                audio.ontimeupdate = function() {
-                    audio.onended = nextSong    
-                }
+                audio.onended = nextSong    
             }
         }
     },
