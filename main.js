@@ -271,11 +271,11 @@ const app = {
             } else {
                 nextBtn.onclick = nextSong
                 previousBtn.onclick = previousSong
+                audio.onended = nextSong
             }
         }
     },
     start: function() {      
-       
         // nút đổi giao diện
         this.switchBtn()
 
