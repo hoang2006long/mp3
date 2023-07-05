@@ -256,7 +256,6 @@ const app = {
             } while(newIndex ==_this.currentIndex)
             _this.currentIndex = newIndex
             _this.loadCurrentSong()
-            console.log(123)
             whenPause()
         }
         randomBtn.onclick = function() {
