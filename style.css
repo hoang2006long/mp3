@@ -260,7 +260,7 @@ input[type=range] {
 }
 
 .musicPlayback__process input[type=range]{
-    width: 250px;
+    width: 280px;
 }
 
 .musicPlayback__time {
