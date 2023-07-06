@@ -8,6 +8,8 @@
 
 html {
     font-family: "Poppins", sans-serif;
+    /* background-image: linear-gradient(#fe6433, #ed194b); */
+    height: 100vh;
 }
 
 .switch {
@@ -37,6 +39,7 @@ html {
     margin-top: 50px;
     flex-direction: row;
     justify-content: space-around;
+    /* background-image: linear-gradient(#fe6433, #ed194b); */
 }
 
 .main--2 {
@@ -128,6 +131,11 @@ html {
 
 .activeBtn {
     color: #ed194b;
+}
+
+.activeSong {
+    background-image: linear-gradient(#fe6433, #ed194b) !important;
+    border: #000000 1px solid;
 }
 
 .control__playSong,
@@ -252,7 +260,7 @@ input[type=range] {
 }
 
 .musicPlayback__process input[type=range]{
-    width: 280px;
+    width: 250px;
 }
 
 .musicPlayback__time {
@@ -306,12 +314,19 @@ input[type=range] {
 
 .listSong .image {
     width: 25%;
+    position: relative;
 }
 
 .listSong .image img {
     width: 3.5rem;
     height: 3.5rem;
     border-radius: 100px;
+    border: #000 1px solid;
+    opacity: 0.9;
+}
+
+.listSong .image img:hover {
+    opacity: 1;
 }
 
 .listSong .content {
@@ -333,4 +348,56 @@ input[type=range] {
 
 .listSong .moreInformation{
     width: 15%;
+}
+
+
+.wave{
+    justify-content:center;
+    align-items: center;
+    position: absolute;
+    display: none;
+    height: 3.5rem;
+    background-color: #505050;
+    width: 3.5rem;
+    border-radius: 100%;
+    opacity: 0.7;
+}
+
+.display-flex {
+    display: flex !important;
+}
+.items{
+    height: 20px;
+    width: 4px;
+    background: rgb(255, 255, 255);
+    border-radius: 50px;
+    margin: 2px;
+    animation: wave 0.8s ease-in-out infinite;
+
+}
+@keyframes wave{
+    0%{
+        transform: scaleY(1);
+    }
+    50%{
+        transform: scaleY(0);
+    }
+    100%{
+        transform: scaleY(1);
+    }
+}
+.items:nth-child(1){
+    animation-delay: 0.1s;
+}
+.items:nth-child(2){
+    animation-delay: 0.2s;
+}
+.items:nth-child(3){
+    animation-delay: 0.3s;
+}
+.items:nth-child(4){
+    animation-delay: 0.2s;
+}
+.items:nth-child(5){
+    animation-delay: 0.1s;
 }

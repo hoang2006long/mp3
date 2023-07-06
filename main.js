@@ -27,6 +27,7 @@ const pauseIcon = $('.control__playSong .icon-pause')
 const timeCurrent = $('.timeCurrent')
 const timeEnd = $('.timeEnd')
 
+var waveMusic = $('.wave')
 const app = {
     songs: [
         {
@@ -84,12 +85,41 @@ const app = {
             btn.classList.remove('switch--click')
         })
     },
+    getCurrentSong: function() {
+        const getCurrentSongId = function(currentIndex) {
+            return `idSong-${currentIndex}`
+        }
+        const currentSong = document.querySelector('[id="'+getCurrentSongId(app.currentIndex)+'"]')
+        return currentSong
+    },
+    getCurrentSongWave: function() {
+        const getCurrentSongId = function(currentIndex) {
+            return `idSong-${currentIndex}`
+        }
+        const currentSongWave = document.querySelector('[id="'+getCurrentSongId(app.currentIndex)+'"] .wave')
+        return currentSongWave
+    },
+    addActiveCurrentSong: function() {
+        this.getCurrentSong(app.currentIndex).classList.add('activeSong')
+
+    },
+    removeActivePreviousSong: function(currentSong, currentWave) {
+        currentSong.classList.remove('activeSong')
+        currentWave.classList.remove('display-flex')
+    },
     renderPlayList: function() {
        const htmls = this.songs.map(function(song,index) {
         return `
-            <div class="song" id="${index}">
+            <div class="song" id="idSong-${index}">
                 <div class="image">
                     <img src="${song.image}" alt="">
+                    <div class="wave">
+                        <div class="items"></div>
+                        <div class="items"></div>
+                        <div class="items"></div>
+                        <div class="items"></div>
+                        <div class="items"></div>
+                    </div>
                 </div>
                 <div class="content">
                     <div class="content__name">${song.name}</div>
@@ -114,10 +144,12 @@ const app = {
         heading.textContent = this.currentSong.name
         cdThump.src = this.currentSong.image
         audio.src = this.currentSong.path
+        
     },
     handleEvent: function() {
         const _this = this
         const songsLength = _this.songs.length
+
         // Xử lý phóng to, thu nhỏ CD
         document.onscroll = function() {
             const scrollTop = window.scrollY || document.documentElement.scrollTop
@@ -141,27 +173,28 @@ const app = {
         })
         CDThumpAnimate.pause()
         
-        // Xử lý khi click play
+        // Xử lý khi click play và nút space bar
         function whenPlay() {
             CDThumpAnimate.pause()
             audio.pause()
             pauseIcon.classList.remove('fa-pause')
             playIcon.classList.add('fa-play')
+            _this.getCurrentSongWave(app.currentIndex).classList.remove('display-flex') 
         }
         function whenPause() {
             CDThumpAnimate.play()
             audio.play()
             pauseIcon.classList.add('fa-pause')
             playIcon.classList.remove('fa-play')
+            _this.addActiveCurrentSong() 
+            _this.getCurrentSongWave(app.currentIndex).classList.add('display-flex')
         }
-        playButton.onclick = function() {
+        function clickPlay() {
             if (_this.isPlaying) {    
                 whenPlay()
             } else {        
                 whenPause()  
-                         
             }
-
             // khi song được play
             audio.onplay = function() {
                 _this.isPlaying = true
@@ -170,7 +203,7 @@ const app = {
             audio.onpause = function() {
                 _this.isPlaying = false
             }
-        
+
             // khi tiến độ bài hát thay đổi
             audio.ontimeupdate = function() {
                 const currentTime = timeFormat(audio.currentTime)
@@ -194,9 +227,19 @@ const app = {
                 }
             }
         }
+        playButton.onclick = clickPlay
+        document.addEventListener('keydown', function(e){
+            if (e.which === 32) {
+                clickPlay()
+            }
+          });
+
+
+        // tự dộng chuyển bài hát mới khi hết thời gian
         audio.onended = function() {
             if(_this.isReturn == false | _this.isRandom == false) {
                 nextSong()
+                _this.addActiveCurrentSong() 
             }  
         }
         
@@ -213,25 +256,36 @@ const app = {
 
          // Xử lý khi nghe bài hát trước đó
         function previousSong() {
+            _this.removeActivePreviousSong( _this.getCurrentSong(),_this.getCurrentSongWave())
             _this.currentIndex--
             if (_this.currentIndex < 0) {
                 _this.currentIndex = songsLength -1
             }  
             _this.loadCurrentSong()
             whenPause()
+            _this.isPlaying = true
         }
-        previousBtn.onclick = previousSong
+        previousBtn.onclick = function() {
+            previousSong()
+            _this.addActiveCurrentSong() 
+        }
 
         // Xử lý khi nghe bài hát tiếp theo
         function nextSong() {
+            _this.removeActivePreviousSong( _this.getCurrentSong(),_this.getCurrentSongWave())
             _this.currentIndex++
             if (_this.currentIndex >= songsLength) {
                 _this.currentIndex = 0
             }  
             _this.loadCurrentSong()
             whenPause()
+            _this.isPlaying = true
+  
         }
-        nextBtn.onclick = nextSong
+        nextBtn.onclick = function() {
+            nextSong()
+            _this.addActiveCurrentSong() 
+        }
   
         // Xử lý khi return bài hát
         returnBtnIcon.onclick = function() {
@@ -250,13 +304,16 @@ const app = {
         
         // Xử lý khi random bài hát
         function randomSong() {
+            _this.removeActivePreviousSong( _this.getCurrentSong(),_this.getCurrentSongWave())
             var newIndex
             do {
                 newIndex = Math.floor(Math.random() * _this.songs.length)
             } while(newIndex ==_this.currentIndex)
             _this.currentIndex = newIndex
             _this.loadCurrentSong()
+            _this.addActiveCurrentSong() 
             whenPause()
+            _this.isPlaying = true
         }
         randomBtn.onclick = function() {
             _this.isRandom =! _this.isRandom
@@ -276,21 +333,24 @@ const app = {
         }
     },
     start: function() {      
-        // nút đổi giao diện
-        this.switchBtn()
-
-        // định nghĩa các thuộc tính cho object
-        this.defindeProperties()
-
-        // lắng nghe và xử lý các sự kiện
-        this.handleEvent()
-
-        // tải thông tin bài hát đầu tiên vào UI khi chạy ứng dụng
-        this.loadCurrentSong()
-
         // render playlist bài hát
         this.renderPlayList()
 
+        // nút đổi giao diện
+        this.switchBtn()
+        
+        // định nghĩa các thuộc tính cho object
+        this.defindeProperties()
+        
+        // lắng nghe và xử lý các sự kiện
+        this.handleEvent()
+        
+        // tải thông tin bài hát đầu tiên vào UI khi chạy ứng dụng
+        this.loadCurrentSong()
+        
+        
+        // thêm activeSong ngay cho bài hát đầu tiên khi load lại trang
+        this.addActiveCurrentSong() 
     }
 }
 
