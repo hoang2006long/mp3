@@ -14,10 +14,11 @@ html {
 
 .switch {
     position: absolute;
+    font-size: 13px;
     cursor: pointer;
     box-shadow: black 0 0 4px;
     border-radius: 10px;
-    padding: 5px
+    padding: 4px
 }
 
 .switch:hover {
@@ -25,7 +26,7 @@ html {
 }
 
 .switch--click {
-    padding: 4px;
+    padding: 3px;
 }
 
 .main ,.musicPlayback, .musicPlayback__songName {
@@ -34,7 +35,7 @@ html {
 }
 
 .main {
-    width: 800px;
+    width: 740px;
     margin: auto;
     margin-top: 50px;
     flex-direction: row;
@@ -58,7 +59,7 @@ html {
     box-shadow: black 0 0 4px;
     padding: 10px;
     border-radius: 10px;
-    width: 384px;
+    width: 350px;
 }
 
 .musicPlayback {
@@ -75,7 +76,7 @@ html {
     top: 0;
     border-top-left-radius: 0;
     border-top-right-radius: 0;
-    width: 400px;
+    width: 360px;
 }
 
 .musicPlayback__songName {
@@ -86,11 +87,11 @@ html {
 
 .musicPlayback__songName h2 {
     display: block;
-    margin: auto;
     color: black;
-    font-size: 30px;
+    font-size: 23px;
     margin: 10px 0 10px 0;
     text-align: center;
+    width: 320px;
 }
 
 .musicPlayback__songName h4 {
@@ -99,8 +100,8 @@ html {
 }
 
 .musicPlayback__songImage {
-    width: 224px;
-    height: 224px;
+    width: 200px;
+    height: 200px;
     border-radius: 1000px;
     margin: 0 auto;
 }
@@ -110,8 +111,8 @@ html {
     justify-content: space-around;
     height: 35px;
     align-items: center;
-    margin-top: 20px;
-    margin-bottom: 30px;
+    margin-top: 25px;
+    margin-bottom: 15px;
 }
 
 .control__return,
@@ -256,11 +257,11 @@ input[type=range] {
 }
 
 .musicPlayback__volume input[type=range]{
-    width: 70px;
+    width: 60px;
 }
 
 .musicPlayback__process input[type=range]{
-    width: 280px;
+    width: 260px;
 }
 
 .musicPlayback__time {
@@ -287,7 +288,7 @@ input[type=range] {
 }
 
 .listSong--1{
-    height: 450px
+    height: 420px
 }
 
 .listSong .song {
@@ -333,17 +334,26 @@ input[type=range] {
     width: 60%;
     flex-direction: column;
     align-items: flex-start;
-    margin-left: 18px
+    margin-left: 18px;
+    
 }
 
 .content .content__name {
-    font-size: 20px;
+    width: 100%;
+    font-size: 19px;
     font-weight: 600;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
 .content .content__author {
-    font-size: 15px;
+    font-size: 14px;
     line-height: 26px;
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
 .listSong .moreInformation{
