@@ -309,7 +309,7 @@ const app = {
 
         // tự dộng chuyển bài hát mới khi hết thời gian
         audio.onended = function() {
-            if(_this.isReturn == false | _this.isRandom == false) {
+            if(_this.isReturn === false || _this.isRandom === false) {
                 nextSong()
                 _this.addActiveCurrentSong() 
             }  
@@ -358,7 +358,7 @@ const app = {
             nextSong()
             _this.addActiveCurrentSong() 
         }
-  
+
         // Xử lý khi return bài hát
         returnBtnIcon.onclick = function() {
             _this.isReturn =! _this.isReturn
@@ -369,9 +369,13 @@ const app = {
                 audio.onended = function() {
                     audio.play() 
                 } 
-            } else {
-                audio.onended = nextSong
-            }       
+                nextBtn.onclick = nextSong
+                previousBtn.onclick = previousSong
+            } 
+            else {
+                nextBtn.onclick = randomSong
+                previousBtn.onclick = randomSong
+            }  
         }    
         
         // Xử lý khi random bài hát
