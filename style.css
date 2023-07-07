@@ -137,6 +137,8 @@ html {
 .activeSong {
     background-image: linear-gradient(#fe6433, #ed194b) !important;
     border: #000000 1px solid;
+    color: rgb(245, 245, 245);
+    text-shadow: 1px 1px #303030;
 }
 
 .control__playSong,
@@ -159,7 +161,7 @@ html {
     font-size: 25px;
 }
 
-.control__playSong .playSong__background:hover {
+.control__playSong .playSong__background:active {
     box-shadow: #ed194b 0 0 5px;
     color: aliceblue;
     text-align: center;
@@ -300,7 +302,7 @@ input[type=range] {
     background-color: #fff;
 }
 
-.listSong .song:hover {
+.listSong .song:active {
     background-color: #dbdbdb;
 }
 
@@ -324,10 +326,6 @@ input[type=range] {
     border-radius: 100px;
     border: #000 1px solid;
     opacity: 0.9;
-}
-
-.listSong .image img:hover {
-    opacity: 1;
 }
 
 .listSong .content {
@@ -367,7 +365,7 @@ input[type=range] {
     position: absolute;
     display: none;
     height: 3.5rem;
-    background-color: #505050;
+    background-color: #7a7676;
     width: 3.5rem;
     border-radius: 100%;
     opacity: 0.7;

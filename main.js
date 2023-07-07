@@ -173,6 +173,7 @@ const app = {
             listSong.classList.toggle('listSong--2')
             listSong.classList.toggle('listSong--1')
             musicPlayback.classList.toggle('musicPlayback--2')
+            app.scrollToActiveSong()
         }
         btn.addEventListener('mousedown', function() {
             btn.classList.add('switch--click')
@@ -242,6 +243,14 @@ const app = {
                 timeEnd.textContent = endTime
             }
         }
+    },
+    scrollToActiveSong: function() {
+        setTimeout(function() {
+            $('.song.activeSong').scrollIntoView({
+                behavior: "smooth",
+                block: 'center'
+            })
+        },100) 
     },
     handleEvent: function() {
         const _this = this
@@ -316,6 +325,7 @@ const app = {
                     if(_this.isReturn === false || _this.isRandom === false) {
                         nextSong()
                         _this.addActiveCurrentSong() 
+                        _this.scrollToActiveSong()
                     }  
                 }
                 
@@ -340,10 +350,12 @@ const app = {
                     _this.loadCurrentSong()
                     whenPlay()
                     _this.isPlaying = true
+                    _this.scrollToActiveSong()
                 }
                 previousBtn.onclick = function() {
                     previousSong()
                     _this.addActiveCurrentSong() 
+
                 }
 
                 // Xử lý khi nghe bài hát tiếp theo
@@ -356,7 +368,7 @@ const app = {
                     _this.loadCurrentSong()
                     whenPlay()
                     _this.isPlaying = true
-        
+                    _this.scrollToActiveSong()
                 }
                 nextBtn.onclick = function() {
                     nextSong()
@@ -369,17 +381,24 @@ const app = {
                     _this.isRandom = false
                     returnBtnIcon.classList.toggle('activeBtn', _this.isReturn) 
                     randomBtnIcon.classList.remove('activeBtn') 
+                    if (_this.isReturn === false && _this.isRandom === false) {
+                        audio.onended = function() {
+                            nextSong() 
+                        } 
+                        nextBtn.onclick = nextSong
+                        previousBtn.onclick = previousSong    
+                    } 
+                    if (_this.isReturn === false && _this.isRandom) {
+                        nextBtn.onclick = randomSong
+                        previousBtn.onclick = randomSong
+                    }
                     if (_this.isReturn) {
                         audio.onended = function() {
                             audio.play() 
                         } 
                         nextBtn.onclick = nextSong
-                        previousBtn.onclick = previousSong
-                    } 
-                    else {
-                        nextBtn.onclick = randomSong
-                        previousBtn.onclick = randomSong
-                    }  
+                        previousBtn.onclick = previousSong  
+                    }
                 }    
                 
                 // Xử lý khi random bài hát
@@ -394,6 +413,7 @@ const app = {
                     _this.addActiveCurrentSong() 
                     whenPlay()
                     _this.isPlaying = true
+                    _this.scrollToActiveSong()
                 }
                 randomBtn.onclick = function() {
                     _this.isRandom =! _this.isRandom
@@ -404,7 +424,8 @@ const app = {
                         nextBtn.onclick = randomSong
                         previousBtn.onclick = randomSong
                         audio.onended = randomSong
-                    } else {
+                    } 
+                    if (_this.isRandom === false && _this.isReturn === false) {
                         nextBtn.onclick = nextSong
                         previousBtn.onclick = previousSong
                         audio.onended = nextSong
@@ -413,12 +434,12 @@ const app = {
     },
     start: function() {      
         this.renderPlayList()  // render playlist bài hát
-        this.switchBtn()  // nút đổi giao diện
         this.defindeProperties()  // định nghĩa các thuộc tính cho object
         this.handleEvent() // lắng nghe và xử lý các sự kiện
         this.loadCurrentSong()  // tải thông tin bài hát đầu tiên vào UI khi chạy ứng dụng
         this.timeUpdate()  // update thời gian của bài hát
         this.addActiveCurrentSong()   // thêm activeSong ngay cho bài hát đầu tiên khi load lại trang
+        this.switchBtn()  // nút đổi giao diện
     }
 }
 
