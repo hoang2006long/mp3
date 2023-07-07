@@ -266,7 +266,7 @@ const app = {
                 const CDThumpAnimate = cdThump.animate([
                     {transform: 'rotate(360deg)'}
                 ], {
-                    duration: 7000, //10 seconds
+                    duration: 7000, //7 seconds
                     iterations: Infinity
                 })
                 CDThumpAnimate.pause()
