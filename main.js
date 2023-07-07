@@ -27,7 +27,8 @@ const pauseIcon = $('.control__playSong .icon-pause')
 const timeCurrent = $('.timeCurrent')
 const timeEnd = $('.timeEnd')
 
-var waveMusic = $('.wave')
+const waveMusic = $('.wave')
+
 const app = {
     songs: [
         {
@@ -143,6 +144,29 @@ const app = {
     isRandom: false,
     isReturn: false,
     currentIndex: 0,
+
+    // ************************HÀM LẤY CÁC GIÁ TRỊ CỦA BÀI HÁT HIỆN TẠI****************************
+            getCurrentSongId: function(currentIndex) {
+                return `idSong-${currentIndex}`
+            },
+            getCurrentSong: function() {
+                const currentSong = $('[id="'+this.getCurrentSongId(this.currentIndex)+'"]')
+                return currentSong
+            },
+            getCurrentSongWave: function() {
+                const currentSongWave = $('[id="'+this.getCurrentSongId(this.currentIndex)+'"] .wave')
+                return currentSongWave
+            },
+
+    // ***************************HÀM XỬ LÝ GIAO DIỆN BÀI HÁT ĐANG ĐƯỢC PHÁT******************
+            addActiveCurrentSong: function() {
+                this.getCurrentSong(this.currentIndex).classList.add('activeSong')
+            },
+            removeActivePreviousSong: function(currentSong, currentWave) {
+                currentSong.classList.remove('activeSong')
+                currentWave.classList.remove('display-flex')
+                    },
+
     switchBtn: function() {
         btn.onclick = function() {
             containerWeb.classList.toggle('main--2')
@@ -157,31 +181,9 @@ const app = {
             btn.classList.remove('switch--click')
         })
     },
-    getCurrentSong: function() {
-        const getCurrentSongId = function(currentIndex) {
-            return `idSong-${currentIndex}`
-        }
-        const currentSong = document.querySelector('[id="'+getCurrentSongId(app.currentIndex)+'"]')
-        return currentSong
-    },
-    getCurrentSongWave: function() {
-        const getCurrentSongId = function(currentIndex) {
-            return `idSong-${currentIndex}`
-        }
-        const currentSongWave = document.querySelector('[id="'+getCurrentSongId(app.currentIndex)+'"] .wave')
-        return currentSongWave
-    },
-    addActiveCurrentSong: function() {
-        this.getCurrentSong(app.currentIndex).classList.add('activeSong')
-
-    },
-    removeActivePreviousSong: function(currentSong, currentWave) {
-        currentSong.classList.remove('activeSong')
-        currentWave.classList.remove('display-flex')
-    },
     renderPlayList: function() {
-       const htmls = this.songs.map(function(song,index) {
-        return `
+        const htmls = this.songs.map(function(song,index) {
+            return `
             <div class="song" id="idSong-${index}">
                 <div class="image">
                     <img src="${song.image}" alt="">
@@ -206,6 +208,7 @@ const app = {
        $('.listSong').innerHTML = htmls.join('');
     },
     defindeProperties: function() {
+        // ĐỊNH NGHĨA CÁC THUỘC TÍNH
         Object.defineProperty(this,'currentSong', {
             get: function() {
                 return this.songs[this.currentIndex]
@@ -215,218 +218,207 @@ const app = {
     loadCurrentSong: function() {
         heading.textContent = this.currentSong.name
         cdThump.src = this.currentSong.image
-        audio.src = this.currentSong.path
-        
+        audio.src = this.currentSong.path   
+    },
+    timeUpdate: function() {
+        audio.ontimeupdate = function() {
+        const currentTime = timeFormat(audio.currentTime)
+        timeCurrent.textContent = currentTime
+        const endTime = timeFormat(audio.duration)
+            // thanh progess
+            if (audio.duration) {
+                const progressPercent = Math.floor(audio.currentTime / audio.duration * 100)
+                progress.value = progressPercent
+            }
+            // update thời gian của bài hát
+            function timeFormat(seconds) {
+                let minute = Math.floor(seconds / 60);
+                let second = Math.floor(seconds % 60);
+                minute = minute < 10 ? "0" + minute : minute;
+                second = second < 10 ? "0" + second : second;
+                return minute + ":" + second;
+            }
+            if (endTime != 'NaN:NaN') {
+                timeEnd.textContent = endTime
+            }
+        }
     },
     handleEvent: function() {
         const _this = this
         const songsLength = _this.songs.length
 
-        // Xử lý phóng to, thu nhỏ CD
-        document.onscroll = function() {
-            const scrollTop = window.scrollY || document.documentElement.scrollTop
-            const newCdThumpwidth = cdThumpWidth - scrollTop
-            cdThump.style.width = newCdThumpwidth > 0 ? newCdThumpwidth + 'px' : 0
-            cdThump.style.height = newCdThumpwidth > 0 ? newCdThumpwidth + 'px' : 0
-            cdThump.style.opacity = newCdThumpwidth/cdThumpWidth
-           if (scrollTop > 260) {
-            musicPlayback.classList.add('musicPlayback--scroll')
-           } else {
-            musicPlayback.classList.remove('musicPlayback--scroll')
-           }
-        }
+        // ****************************************** XỬ LÝ CD************************************************
+                //  Xử lý phóng to, thu nhỏ CD
+                document.onscroll = function() {
+                    const scrollTop = window.scrollY || document.documentElement.scrollTop
+                    const newCdThumpwidth = cdThumpWidth - scrollTop
+                    cdThump.style.width = newCdThumpwidth > 0 ? newCdThumpwidth + 'px' : 0
+                    cdThump.style.height = newCdThumpwidth > 0 ? newCdThumpwidth + 'px' : 0
+                    cdThump.style.opacity = newCdThumpwidth/cdThumpWidth
+                    if (scrollTop > 260) {
+                    musicPlayback.classList.add('musicPlayback--scroll')
+                    } else {
+                    musicPlayback.classList.remove('musicPlayback--scroll')
+                    }
+                }
 
-        // Xử lý CD quay
-        const CDThumpAnimate = cdThump.animate([
-            {transform: 'rotate(360deg)'}
-        ], {
-            duration: 10000, //10 seconds
-            iterations: Infinity
-        })
-        CDThumpAnimate.pause()
+                // Xử lý CD quay
+                const CDThumpAnimate = cdThump.animate([
+                    {transform: 'rotate(360deg)'}
+                ], {
+                    duration: 7000, //10 seconds
+                    iterations: Infinity
+                })
+                CDThumpAnimate.pause()
         
-        // Xử lý khi click play và nút space bar
-        function whenPlay() {
-            CDThumpAnimate.pause()
-            audio.pause()
-            pauseIcon.classList.remove('fa-pause')
-            playIcon.classList.add('fa-play')
-            _this.getCurrentSongWave(app.currentIndex).classList.remove('display-flex') 
-        }
-        function whenPause() {
-            CDThumpAnimate.play()
-            audio.play()
-            pauseIcon.classList.add('fa-pause')
-            playIcon.classList.remove('fa-play')
-            _this.addActiveCurrentSong() 
-            _this.getCurrentSongWave(app.currentIndex).classList.add('display-flex')
-        }
-        function clickPlay() {
-            if (_this.isPlaying) {    
-                whenPlay()
-            } else {        
-                whenPause()  
-            }
-            // khi song được play
-            audio.onplay = function() {
-                _this.isPlaying = true
-            }
-            // khi song được pause
-            audio.onpause = function() {
-                _this.isPlaying = false
-            }
-
-            // khi tiến độ bài hát thay đổi
-            audio.ontimeupdate = function() {
-                const currentTime = timeFormat(audio.currentTime)
-                timeCurrent.textContent = currentTime
-                const endTime = timeFormat(audio.duration)
-
-                if (audio.duration) {
-                    const progressPercent = Math.floor(audio.currentTime / audio.duration * 100)
-                    progress.value = progressPercent
+        // ***************************Xử lý khi click play và nút space bar*********************************
+                function whenPause() {
+                    CDThumpAnimate.pause()
+                    audio.pause()
+                    pauseIcon.classList.remove('fa-pause')
+                    playIcon.classList.add('fa-play')
+                    _this.getCurrentSongWave(_this.currentIndex).classList.remove('display-flex') 
                 }
-                // update thời gian của bài hát
-                function timeFormat(seconds) {
-                    let minute = Math.floor(seconds / 60);
-                    let second = Math.floor(seconds % 60);
-                    minute = minute < 10 ? "0" + minute : minute;
-                    second = second < 10 ? "0" + second : second;
-                    return minute + ":" + second;
+                function whenPlay() {
+                    CDThumpAnimate.play()
+                    audio.play()
+                    pauseIcon.classList.add('fa-pause')
+                    playIcon.classList.remove('fa-play')
+                    _this.addActiveCurrentSong() 
+                    _this.getCurrentSongWave(_this.currentIndex).classList.add('display-flex')
                 }
-                if (endTime != 'NaN:NaN') {
-                    timeEnd.textContent = endTime
+                function clickPlay() {
+                    if (_this.isPlaying) {    
+                        whenPause()
+                    } else {        
+                        whenPlay()  
+                    }
+                    // khi song được play
+                    audio.onplay = function() {
+                        _this.isPlaying = true
+                    }
+                    // khi song được pause
+                    audio.onpause = function() {
+                        _this.isPlaying = false
+                    }
                 }
-            }
-        }
-        playButton.onclick = clickPlay
-        document.addEventListener('keydown', function(e){
-            if (e.which === 32) {
-                clickPlay()
-            }
-          });
-
-
-        // tự dộng chuyển bài hát mới khi hết thời gian
-        audio.onended = function() {
-            if(_this.isReturn === false || _this.isRandom === false) {
-                nextSong()
-                _this.addActiveCurrentSong() 
-            }  
-        }
+                playButton.onclick = clickPlay
+                document.addEventListener('keydown', function(e){
+                    if (e.which === 32) {
+                        clickPlay()
+                    }
+                });
         
-        // xử lý khi tua bài hát
-        progress.oninput = function(e) {
-            const seekTime = e.target.value * audio.duration / 100
-            audio.currentTime = seekTime
-        }
 
-        // Xử lý volume của bài hát
-        volumeBar.oninput = function(e) {
-            audio.volume = e.target.value
-        }
-
-         // Xử lý khi nghe bài hát trước đó
-        function previousSong() {
-            _this.removeActivePreviousSong( _this.getCurrentSong(),_this.getCurrentSongWave())
-            _this.currentIndex--
-            if (_this.currentIndex < 0) {
-                _this.currentIndex = songsLength -1
-            }  
-            _this.loadCurrentSong()
-            whenPause()
-            _this.isPlaying = true
-        }
-        previousBtn.onclick = function() {
-            previousSong()
-            _this.addActiveCurrentSong() 
-        }
-
-        // Xử lý khi nghe bài hát tiếp theo
-        function nextSong() {
-            _this.removeActivePreviousSong( _this.getCurrentSong(),_this.getCurrentSongWave())
-            _this.currentIndex++
-            if (_this.currentIndex >= songsLength) {
-                _this.currentIndex = 0
-            }  
-            _this.loadCurrentSong()
-            whenPause()
-            _this.isPlaying = true
-  
-        }
-        nextBtn.onclick = function() {
-            nextSong()
-            _this.addActiveCurrentSong() 
-        }
-
-        // Xử lý khi return bài hát
-        returnBtnIcon.onclick = function() {
-            _this.isReturn =! _this.isReturn
-            _this.isRandom = false
-            returnBtnIcon.classList.toggle('activeBtn', _this.isReturn) 
-            randomBtnIcon.classList.remove('activeBtn') 
-            if (_this.isReturn) {
+        // *********************************************XỬ LÝ CÁC THAO TÁC TRÊN BÃNG ĐIỀU KHIỂN**************************************
+                // tự động chuyển bài hát mới khi hết thời gian
                 audio.onended = function() {
-                    audio.play() 
-                } 
-                nextBtn.onclick = nextSong
-                previousBtn.onclick = previousSong
-            } 
-            else {
-                nextBtn.onclick = randomSong
-                previousBtn.onclick = randomSong
-            }  
-        }    
+                    if(_this.isReturn === false || _this.isRandom === false) {
+                        nextSong()
+                        _this.addActiveCurrentSong() 
+                    }  
+                }
+                
+                // xử lý khi tua bài hát
+                progress.oninput = function(e) {
+                    const seekTime = e.target.value * audio.duration / 100
+                    audio.currentTime = seekTime
+                }
+
+                // xử lý volume của bài hát
+                volumeBar.oninput = function(e) {
+                    audio.volume = e.target.value
+                }
+
+                // Xử lý khi nghe bài hát trước đó
+                function previousSong() {
+                    _this.removeActivePreviousSong( _this.getCurrentSong(),_this.getCurrentSongWave())
+                    _this.currentIndex--
+                    if (_this.currentIndex < 0) {
+                        _this.currentIndex = songsLength -1
+                    }  
+                    _this.loadCurrentSong()
+                    whenPlay()
+                    _this.isPlaying = true
+                }
+                previousBtn.onclick = function() {
+                    previousSong()
+                    _this.addActiveCurrentSong() 
+                }
+
+                // Xử lý khi nghe bài hát tiếp theo
+                function nextSong() {
+                    _this.removeActivePreviousSong( _this.getCurrentSong(),_this.getCurrentSongWave())
+                    _this.currentIndex++
+                    if (_this.currentIndex >= songsLength) {
+                        _this.currentIndex = 0
+                    }  
+                    _this.loadCurrentSong()
+                    whenPlay()
+                    _this.isPlaying = true
         
-        // Xử lý khi random bài hát
-        function randomSong() {
-            _this.removeActivePreviousSong( _this.getCurrentSong(),_this.getCurrentSongWave())
-            var newIndex
-            do {
-                newIndex = Math.floor(Math.random() * _this.songs.length)
-            } while(newIndex ==_this.currentIndex)
-            _this.currentIndex = newIndex
-            _this.loadCurrentSong()
-            _this.addActiveCurrentSong() 
-            whenPause()
-            _this.isPlaying = true
-        }
-        randomBtn.onclick = function() {
-            _this.isRandom =! _this.isRandom
-            _this.isReturn = false
-            randomBtnIcon.classList.toggle('activeBtn', _this.isRandom)    
-            returnBtnIcon.classList.remove('activeBtn')    
-        
-            if (_this.isRandom) {
-                nextBtn.onclick = randomSong
-                previousBtn.onclick = randomSong
-                audio.onended = randomSong
-            } else {
-                nextBtn.onclick = nextSong
-                previousBtn.onclick = previousSong
-                audio.onended = nextSong
-            }
-        }
+                }
+                nextBtn.onclick = function() {
+                    nextSong()
+                    _this.addActiveCurrentSong() 
+                }
+
+                // Xử lý khi return bài hát
+                returnBtnIcon.onclick = function() {
+                    _this.isReturn =! _this.isReturn
+                    _this.isRandom = false
+                    returnBtnIcon.classList.toggle('activeBtn', _this.isReturn) 
+                    randomBtnIcon.classList.remove('activeBtn') 
+                    if (_this.isReturn) {
+                        audio.onended = function() {
+                            audio.play() 
+                        } 
+                        nextBtn.onclick = nextSong
+                        previousBtn.onclick = previousSong
+                    } 
+                    else {
+                        nextBtn.onclick = randomSong
+                        previousBtn.onclick = randomSong
+                    }  
+                }    
+                
+                // Xử lý khi random bài hát
+                function randomSong() {
+                    _this.removeActivePreviousSong( _this.getCurrentSong(),_this.getCurrentSongWave())
+                    let newIndex
+                    do {
+                        newIndex = Math.floor(Math.random() * _this.songs.length)
+                    } while(newIndex ==_this.currentIndex)
+                    _this.currentIndex = newIndex
+                    _this.loadCurrentSong()
+                    _this.addActiveCurrentSong() 
+                    whenPlay()
+                    _this.isPlaying = true
+                }
+                randomBtn.onclick = function() {
+                    _this.isRandom =! _this.isRandom
+                    _this.isReturn = false
+                    randomBtnIcon.classList.toggle('activeBtn', _this.isRandom)    
+                    returnBtnIcon.classList.remove('activeBtn')    
+                    if (_this.isRandom) {
+                        nextBtn.onclick = randomSong
+                        previousBtn.onclick = randomSong
+                        audio.onended = randomSong
+                    } else {
+                        nextBtn.onclick = nextSong
+                        previousBtn.onclick = previousSong
+                        audio.onended = nextSong
+                    }
+                }
     },
     start: function() {      
-        // render playlist bài hát
-        this.renderPlayList()
-
-        // nút đổi giao diện
-        this.switchBtn()
-        
-        // định nghĩa các thuộc tính cho object
-        this.defindeProperties()
-        
-        // lắng nghe và xử lý các sự kiện
-        this.handleEvent()
-        
-        // tải thông tin bài hát đầu tiên vào UI khi chạy ứng dụng
-        this.loadCurrentSong()
-        
-        
-        // thêm activeSong ngay cho bài hát đầu tiên khi load lại trang
-        this.addActiveCurrentSong() 
+        this.renderPlayList()  // render playlist bài hát
+        this.switchBtn()  // nút đổi giao diện
+        this.defindeProperties()  // định nghĩa các thuộc tính cho object
+        this.handleEvent() // lắng nghe và xử lý các sự kiện
+        this.loadCurrentSong()  // tải thông tin bài hát đầu tiên vào UI khi chạy ứng dụng
+        this.timeUpdate()  // update thời gian của bài hát
+        this.addActiveCurrentSong()   // thêm activeSong ngay cho bài hát đầu tiên khi load lại trang
     }
 }
 
