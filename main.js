@@ -28,6 +28,7 @@ const timeCurrent = $('.timeCurrent')
 const timeEnd = $('.timeEnd')
 
 const waveMusic = $('.wave')
+const progessBtn = $('.musicPlayback__process input[type=range]')
 
 const app = {
     songs: [
@@ -340,6 +341,14 @@ const app = {
                     audio.currentTime = seekTime
                 }
 
+                // xử lý tắt âm khi tua bài hát
+                progessBtn.addEventListener('mousedown', function() {
+                    whenPause()
+                })
+                progessBtn.addEventListener('mouseup', function() {
+                    clickPlay()
+                })
+
                 // xử lý volume của bài hát
                 volumeBar.oninput = function(e) {
                     audio.volume = e.target.value
@@ -440,8 +449,8 @@ const app = {
                             alert('you just click the option icon')
                         }
                     }
-
                 }
+
     },
     start: function() {      
         this.renderPlayList()  // render playlist bài hát
@@ -455,3 +464,4 @@ const app = {
 }
 
 app.start()
+
