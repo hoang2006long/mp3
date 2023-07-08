@@ -341,11 +341,19 @@ const app = {
                     audio.currentTime = seekTime
                 }
 
-                // xử lý tắt âm khi tua bài hát
+                // xử lý tắt âm khi tua bài hát trên điện thoại
+                progessBtn.addEventListener('touchstart', function() {
+                    whenPause()
+                })
+                progessBtn.addEventListener('touchend',function() {
+                    clickPlay()
+                })
+
+                // xử lý tắt âm khi tua bài hát trên máy tính
                 progessBtn.addEventListener('mousedown', function() {
                     whenPause()
                 })
-                progessBtn.addEventListener('mouseup', function() {
+                progessBtn.addEventListener('mouseup',function() {
                     clickPlay()
                 })
 
