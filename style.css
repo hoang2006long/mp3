@@ -454,16 +454,16 @@ input[type=range] {
     }
 
     .listSong .image img {
-        width: 5.6rem;
-        height: 5.6rem;
+        width: 5rem;
+        height: 5rem;
     }
 
     .musicPlayback__volume input[type=range]{
-        width: 5rem;
+        width: 5.5rem;
     }
     
     .musicPlayback__process input[type=range]{
-        width: 22rem;
+        width: 23.5rem;
     }
     .content .content__name {
         font-size: 1.6rem;
