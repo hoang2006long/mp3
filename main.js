@@ -422,8 +422,13 @@ const app = {
 
                 // xử lý khi click vào bài hát
                 listSong.onclick = function(e) {
-                    const songNode = e.target.closest('.song:not(.activeSong')
+                    const songNode = e.target.closest('.song:not(.activeSong)')
                     const optionNode =  e.target.closest('.moreInformation')
+                    const img1Node = e.target.closest('.song.activeSong')
+                    const imgNode = e.target.closest('.image')
+                    if (imgNode && img1Node) {
+                        clickPlay()
+                    }
                     if (songNode || optionNode) {
                         if (songNode && !optionNode){
                             _this.removeActivePreviousSong( _this.getCurrentSong(),_this.getCurrentSongWave())
@@ -435,6 +440,7 @@ const app = {
                             alert('you just click the option icon')
                         }
                     }
+
                 }
     },
     start: function() {      
