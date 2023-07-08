@@ -35,7 +35,7 @@ html {
 }
 
 .main {
-    width: 64rem;
+    width: 74rem;
     margin: auto;
     margin-top: 5rem;
     flex-direction: row;
@@ -58,7 +58,7 @@ html {
     box-shadow: black 0 0 0.4rem;
     padding: 1rem;
     border-radius: 1rem;
-    width: 30rem;
+    width: 35rem;
 }
 
 .musicPlayback {
@@ -75,7 +75,7 @@ html {
     top: 0;
     border-top-left-radius: 0;
     border-top-right-radius: 0;
-    width: 33rem;
+    width: 36rem;
 }
 
 .musicPlayback__songName {
@@ -259,11 +259,11 @@ input[type=range] {
 }
 
 .musicPlayback__volume input[type=range]{
-    width: 5rem;
+    width: 6rem;
 }
 
 .musicPlayback__process input[type=range]{
-    width: 22rem;
+    width: 26rem;
 }
 
 .musicPlayback__time {
@@ -329,8 +329,8 @@ input[type=range] {
 }
 
 .listSong .image img {
-    width: 5.6rem;
-    height: 5.6rem;
+    width: 6rem;
+    height: 6rem;
     border-radius: 10rem;
     border: #000 0.1rem solid;
     opacity: 0.9;
@@ -424,13 +424,49 @@ input[type=range] {
 
     .main {
         margin-top: 2rem;
+        width:68rem
     }
+
+    .musicPlayback,
+    .listSong{
+        width: 32rem;
+    }
+
+    .musicPlayback--scroll {
+        width: 34rem
+    }
+
+    .listSong .song {
+        width: 30rem
+    }
+
     .musicPlayback__songImage {
-        height: 14rem;
-        width: 14rem;
+        height: 16rem;
+        width: 16rem;
     }
 
     .listSong--2 {
-        margin-top: 42rem;
+        margin-top: 37rem;
     }
+
+    .listSong--1 {
+        height: 37.25rem
+    }
+
+    .listSong .image img {
+        width: 5.6rem;
+        height: 5.6rem;
+    }
+
+    .musicPlayback__volume input[type=range]{
+        width: 5rem;
+    }
+    
+    .musicPlayback__process input[type=range]{
+        width: 22rem;
+    }
+    .content .content__name {
+        font-size: 1.6rem;
+    }
+    
 }
