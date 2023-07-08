@@ -107,6 +107,7 @@ body {
     height: 200px;
     border-radius: 1000px;
     margin: 0 auto;
+    border: 1px solid;
 }
 
 .musicPlayback__control {
@@ -123,7 +124,7 @@ body {
 .control__nextSong ,
 .control__random {
     cursor: pointer;
-    color: #5f5e60
+    color: #5f5e60;
 }
 
 .control__return i,
