@@ -424,11 +424,14 @@ const app = {
                     const songNode = e.target.closest('.song:not(.activeSong')
                     const optionNode =  e.target.closest('.moreInformation')
                     if (songNode || optionNode) {
-                        _this.removeActivePreviousSong( _this.getCurrentSong(),_this.getCurrentSongWave())
                         if (songNode && !optionNode){
+                            _this.removeActivePreviousSong( _this.getCurrentSong(),_this.getCurrentSongWave())
                             const songIndexByClick = Number(songNode.dataset.id)
                             _this.currentIndex = songIndexByClick
                             totalPlayMusicFunction()
+                        }
+                        if (optionNode) {
+                            alert('you just click the option icon')
                         }
                     }
                 }
