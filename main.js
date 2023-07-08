@@ -310,9 +310,10 @@ const app = {
                     }
                 }
                 playButton.onclick = clickPlay
-                document.addEventListener('keydown', function(e){
+                window.addEventListener('keydown', function(e){
                     if (e.which === 32) {
                         clickPlay()
+                        e.preventDefault();
                     }
                 });
         
