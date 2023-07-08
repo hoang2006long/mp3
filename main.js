@@ -146,15 +146,12 @@ const app = {
     currentIndex: 0,
 
     // ************************HÀM LẤY CÁC GIÁ TRỊ CỦA BÀI HÁT HIỆN TẠI****************************
-            getCurrentSongId: function(currentIndex) {
-                return `idSong-${currentIndex}`
-            },
             getCurrentSong: function() {
-                const currentSong = $('[id="'+this.getCurrentSongId(this.currentIndex)+'"]')
+                const currentSong = $('[data-id="'+this.currentIndex+'"]')
                 return currentSong
             },
             getCurrentSongWave: function() {
-                const currentSongWave = $('[id="'+this.getCurrentSongId(this.currentIndex)+'"] .wave')
+                const currentSongWave = $('[data-id="'+this.currentIndex+'"] .wave')
                 return currentSongWave
             },
 
@@ -185,7 +182,7 @@ const app = {
     renderPlayList: function() {
         const htmls = this.songs.map(function(song,index) {
             return `
-            <div class="song" id="idSong-${index}">
+            <div class="song" data-id="${index}">
                 <div class="image">
                     <img src="${song.image}" alt="">
                     <div class="wave">
@@ -296,6 +293,7 @@ const app = {
                     _this.addActiveCurrentSong() 
                     _this.getCurrentSongWave(_this.currentIndex).classList.add('display-flex')
                 }
+
                 function clickPlay() {
                     if (_this.isPlaying) {    
                         whenPause()
@@ -318,14 +316,20 @@ const app = {
                     }
                 });
         
+        // *********************************************XỬ LÝ CÁC THAO TÁC TRÊN BẢNG ĐIỀU KHIỂN**************************************
+                // toàn bộ hàm khi phát nhạc
+                function totalPlayMusicFunction() {
+                    _this.loadCurrentSong()
+                    whenPlay()
+                    _this.addActiveCurrentSong() 
+                    _this.isPlaying = true
+                    _this.scrollToActiveSong()
+                }
 
-        // *********************************************XỬ LÝ CÁC THAO TÁC TRÊN BÃNG ĐIỀU KHIỂN**************************************
                 // tự động chuyển bài hát mới khi hết thời gian
                 audio.onended = function() {
                     if(_this.isReturn === false || _this.isRandom === false) {
-                        nextSong()
-                        _this.addActiveCurrentSong() 
-                        _this.scrollToActiveSong()
+                        nextSong()                      
                     }  
                 }
                 
@@ -347,16 +351,9 @@ const app = {
                     if (_this.currentIndex < 0) {
                         _this.currentIndex = songsLength -1
                     }  
-                    _this.loadCurrentSong()
-                    whenPlay()
-                    _this.isPlaying = true
-                    _this.scrollToActiveSong()
+                    totalPlayMusicFunction()
                 }
-                previousBtn.onclick = function() {
-                    previousSong()
-                    _this.addActiveCurrentSong() 
-
-                }
+                previousBtn.onclick = previousSong
 
                 // Xử lý khi nghe bài hát tiếp theo
                 function nextSong() {
@@ -365,15 +362,9 @@ const app = {
                     if (_this.currentIndex >= songsLength) {
                         _this.currentIndex = 0
                     }  
-                    _this.loadCurrentSong()
-                    whenPlay()
-                    _this.isPlaying = true
-                    _this.scrollToActiveSong()
+                    totalPlayMusicFunction()
                 }
-                nextBtn.onclick = function() {
-                    nextSong()
-                    _this.addActiveCurrentSong() 
-                }
+                nextBtn.onclick = nextSong
 
                 // Xử lý khi return bài hát
                 returnBtnIcon.onclick = function() {
@@ -381,14 +372,14 @@ const app = {
                     _this.isRandom = false
                     returnBtnIcon.classList.toggle('activeBtn', _this.isReturn) 
                     randomBtnIcon.classList.remove('activeBtn') 
-                    if (_this.isReturn === false && _this.isRandom === false) {
+                    if (!_this.isReturn && !_this.isRandom) {
                         audio.onended = function() {
                             nextSong() 
                         } 
                         nextBtn.onclick = nextSong
                         previousBtn.onclick = previousSong    
                     } 
-                    if (_this.isReturn === false && _this.isRandom) {
+                    if (!_this.isReturn && _this.isRandom) {
                         nextBtn.onclick = randomSong
                         previousBtn.onclick = randomSong
                     }
@@ -409,11 +400,7 @@ const app = {
                         newIndex = Math.floor(Math.random() * _this.songs.length)
                     } while(newIndex ==_this.currentIndex)
                     _this.currentIndex = newIndex
-                    _this.loadCurrentSong()
-                    _this.addActiveCurrentSong() 
-                    whenPlay()
-                    _this.isPlaying = true
-                    _this.scrollToActiveSong()
+                    totalPlayMusicFunction()               
                 }
                 randomBtn.onclick = function() {
                     _this.isRandom =! _this.isRandom
@@ -425,10 +412,24 @@ const app = {
                         previousBtn.onclick = randomSong
                         audio.onended = randomSong
                     } 
-                    if (_this.isRandom === false && _this.isReturn === false) {
+                    if (!_this.isRandom && !_this.isReturn) {
                         nextBtn.onclick = nextSong
                         previousBtn.onclick = previousSong
                         audio.onended = nextSong
+                    }
+                }
+
+                // xử lý khi click vào bài hát
+                listSong.onclick = function(e) {
+                    const songNode = e.target.closest('.song:not(.activeSong')
+                    const optionNode =  e.target.closest('.moreInformation')
+                    if (songNode || optionNode) {
+                        _this.removeActivePreviousSong( _this.getCurrentSong(),_this.getCurrentSongWave())
+                        if (songNode && !optionNode){
+                            const songIndexByClick = Number(songNode.dataset.id)
+                            _this.currentIndex = songIndexByClick
+                            totalPlayMusicFunction()
+                        }
                     }
                 }
     },
