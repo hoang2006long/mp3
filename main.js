@@ -355,7 +355,8 @@ const app = {
 
                 // Xử lý khi nghe bài hát trước đó
                 function previousSong() {
-                    
+                    const currentSong = $('[data-id="'+_this.currentIndex+'"]')
+                    const currentSongWave = $('[data-id="'+_this.currentIndex+'"] .wave')
                     _this.removeActivePreviousSong(currentSong,currentSongWave)
                     _this.currentIndex--
                     if (_this.currentIndex < 0) {

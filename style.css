@@ -75,7 +75,7 @@ html {
     top: 0;
     border-top-left-radius: 0;
     border-top-right-radius: 0;
-    width: 36rem;
+    width: 35.8rem;
 }
 
 .musicPlayback__songName {
@@ -433,7 +433,7 @@ input[type=range] {
     }
 
     .musicPlayback--scroll {
-        width: 34rem
+        width: 33rem
     }
 
     .listSong .song {
