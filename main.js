@@ -251,7 +251,7 @@ const app = {
                     cdThump.style.width = newCdThumpwidth > 0 ? newCdThumpwidth + 'px' : 0
                     cdThump.style.height = newCdThumpwidth > 0 ? newCdThumpwidth + 'px' : 0
                     cdThump.style.opacity = newCdThumpwidth/cdThumpWidth
-                    if (scrollTop > 220) {
+                    if (scrollTop > 100) {
                     musicPlayback.classList.add('musicPlayback--scroll')
                     } else {
                     musicPlayback.classList.remove('musicPlayback--scroll')

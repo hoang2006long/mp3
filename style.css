@@ -428,9 +428,9 @@ input[type=range] {
 
 /* =================== RESPONSIVE ===================== */
 /* tablet */
-@media (min-width: 739px) and (max-width:1023px) {
+@media (min-width: 740px) and (max-width:1023px) {
     html {
-        font-size: 57.5%;
+        font-size: 45%;
     }
 }
 
@@ -441,6 +441,7 @@ input[type=range] {
     }
  
     .main {
+        margin-top: 1rem;
         width:68rem
     }
 
@@ -529,7 +530,7 @@ input[type=range] {
     }
 }
 
-@media (max-width: 290px)  {
+@media (max-width: 290px) and (max-height: 290px)  {
     html {
         display: none;
     }
