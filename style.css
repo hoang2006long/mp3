@@ -5,12 +5,12 @@
     user-select: none;
 }
 
-
 html {
     font-family: "Poppins", sans-serif;
     font-size: 62.5%;
 }
 
+/* ============== SWITCH BUTTON =================== */
 .switch {
     position: absolute;
     font-size: 1.3rem;
@@ -29,6 +29,8 @@ html {
     padding: 0.3rem;
 }
 
+
+/* ========================= MAIN ============================== */
 .main ,.musicPlayback, .musicPlayback__songName {
     display: flex;
     flex-direction: column;
@@ -52,6 +54,7 @@ html {
     width: 100% !important;
 }
 
+/* ======================== MUSIC PLAYBACK ========================== */
 .musicPlayback,
 .listSong,
 .listSong .song{
@@ -167,6 +170,7 @@ html {
     text-align: center;
 }
 
+/* ====================== PROGRESS BAR============================ */
 input[type=range] {
     -webkit-appearance: none;
     margin: 1rem 0;
@@ -273,6 +277,7 @@ input[type=range] {
     font-size: 1.3rem;
 }
 
+/* ============================= PLAY LIST =============================== */
 .listSong {
     overflow-y: scroll;
     background-color: #f5d1d1;
@@ -366,6 +371,20 @@ input[type=range] {
     width: 15%;
 }
 
+.display-flex {
+    display: flex !important;
+}
+
+/* ============== WAVE ==================*/
+.items{
+    height: 2rem;
+    width: 0.4rem;
+    background: rgb(255, 255, 255);
+    border-radius: 5rem;
+    margin: 0.2rem;
+    animation: wave 0.8s ease-in-out infinite;
+}
+
 .wave{
     justify-content:center;
     align-items: center;
@@ -378,18 +397,6 @@ input[type=range] {
     opacity: 0.7;
 }
 
-.display-flex {
-    display: flex !important;
-}
-.items{
-    height: 2rem;
-    width: 0.4rem;
-    background: rgb(255, 255, 255);
-    border-radius: 5rem;
-    margin: 0.2rem;
-    animation: wave 0.8s ease-in-out infinite;
-
-}
 @keyframes wave{
     0%{
         transform: scaleY(1);
@@ -417,13 +424,23 @@ input[type=range] {
     animation-delay: 0.1s;
 }
 
+
+
+/* =================== RESPONSIVE ===================== */
+/* tablet */
+@media (min-width: 739px) and (max-width:1023px) {
+    html {
+        font-size: 57.5%;
+    }
+}
+
+/* phone */
 @media (max-width: 739px) {
     html {
         font-size: 50%;
     }
-
+ 
     .main {
-        margin-top: 2rem;
         width:68rem
     }
 
@@ -446,7 +463,7 @@ input[type=range] {
     }
 
     .listSong--2 {
-        margin-top: 38.5rem;
+        margin-top: 39.5rem;
     }
 
     .listSong--1 {
@@ -472,5 +489,60 @@ input[type=range] {
     .wave {
         width :5rem;
         height :5rem;
+    }
+
+    /* phone vertical rotation */
+    @media (max-width: 540px) {
+        .main {
+            flex-direction: column ;
+            align-items: center;
+            margin: auto;
+            width: 250px;
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .musicPlayback{
+            position: fixed;
+            top: 2rem;
+            z-index: 1;
+        }
+
+        .listSong {
+            padding: 0;
+            margin-bottom: 2rem;
+            padding: 1rem;
+            margin-top: 39.5rem;
+            height: 100%;
+        }
+
+        .musicPlayback--scroll {
+            top: 0;
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+            width: 33rem;
+        }
+
+        .switch {
+            display: none;
+        }
+    }
+}
+
+@media (max-width: 290px)  {
+    html {
+        display: none;
+    }
+}
+
+@media (min-width: 1440px) {
+    html {
+        font-size: 150%;
+    }
+}
+
+@media (min-width: 2560px) {
+    html {
+        font-size: 200%;
     }
 }
