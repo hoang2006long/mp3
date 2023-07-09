@@ -145,20 +145,9 @@ const app = {
     isRandom: false,
     isReturn: false,
     currentIndex: 0,
-
-    // ************************HÀM LẤY CÁC GIÁ TRỊ CỦA BÀI HÁT HIỆN TẠI****************************
-            getCurrentSong: function() {
-                const currentSong = $('[data-id="'+this.currentIndex+'"]')
-                return currentSong
-            },
-            getCurrentSongWave: function() {
-                const currentSongWave = $('[data-id="'+this.currentIndex+'"] .wave')
-                return currentSongWave
-            },
-
     // ***************************HÀM XỬ LÝ GIAO DIỆN BÀI HÁT ĐANG ĐƯỢC PHÁT******************
             addActiveCurrentSong: function() {
-                this.getCurrentSong(this.currentIndex).classList.add('activeSong')
+                $('[data-id="'+this.currentIndex+'"]').classList.add('activeSong')
             },
             removeActivePreviousSong: function(currentSong, currentWave) {
                 currentSong.classList.remove('activeSong')
@@ -253,7 +242,7 @@ const app = {
     handleEvent: function() {
         const _this = this
         const songsLength = _this.songs.length
-
+ 
         // ****************************************** XỬ LÝ CD************************************************
                 //  Xử lý phóng to, thu nhỏ CD
                 document.onscroll = function() {
@@ -262,7 +251,7 @@ const app = {
                     cdThump.style.width = newCdThumpwidth > 0 ? newCdThumpwidth + 'px' : 0
                     cdThump.style.height = newCdThumpwidth > 0 ? newCdThumpwidth + 'px' : 0
                     cdThump.style.opacity = newCdThumpwidth/cdThumpWidth
-                    if (scrollTop > 260) {
+                    if (scrollTop > 220) {
                     musicPlayback.classList.add('musicPlayback--scroll')
                     } else {
                     musicPlayback.classList.remove('musicPlayback--scroll')
@@ -279,20 +268,22 @@ const app = {
                 CDThumpAnimate.pause()
         
         // ***************************Xử lý khi click play và nút space bar*********************************
-                function whenPause() {
+                function whenPause() {         
+                    const currentSongWave = $('[data-id="'+_this.currentIndex+'"] .wave')
                     CDThumpAnimate.pause()
                     audio.pause()
                     pauseIcon.classList.remove('fa-pause')
                     playIcon.classList.add('fa-play')
-                    _this.getCurrentSongWave(_this.currentIndex).classList.remove('display-flex') 
+                    currentSongWave.classList.remove('display-flex') 
                 }
-                function whenPlay() {
+                function whenPlay() {                  
+                     const currentSongWave = $('[data-id="'+_this.currentIndex+'"] .wave')
                     CDThumpAnimate.play()
                     audio.play()
                     pauseIcon.classList.add('fa-pause')
                     playIcon.classList.remove('fa-play')
                     _this.addActiveCurrentSong() 
-                    _this.getCurrentSongWave(_this.currentIndex).classList.add('display-flex')
+                    currentSongWave.classList.add('display-flex')
                 }
 
                 function clickPlay() {
@@ -364,7 +355,8 @@ const app = {
 
                 // Xử lý khi nghe bài hát trước đó
                 function previousSong() {
-                    _this.removeActivePreviousSong( _this.getCurrentSong(),_this.getCurrentSongWave())
+                    
+                    _this.removeActivePreviousSong(currentSong,currentSongWave)
                     _this.currentIndex--
                     if (_this.currentIndex < 0) {
                         _this.currentIndex = songsLength -1
@@ -375,7 +367,9 @@ const app = {
 
                 // Xử lý khi nghe bài hát tiếp theo
                 function nextSong() {
-                    _this.removeActivePreviousSong( _this.getCurrentSong(),_this.getCurrentSongWave())
+                    const currentSong = $('[data-id="'+_this.currentIndex+'"]')
+                    const currentSongWave = $('[data-id="'+_this.currentIndex+'"] .wave')
+                    _this.removeActivePreviousSong(currentSong,currentSongWave)
                     _this.currentIndex++
                     if (_this.currentIndex >= songsLength) {
                         _this.currentIndex = 0
@@ -412,7 +406,9 @@ const app = {
                 
                 // Xử lý khi random bài hát
                 function randomSong() {
-                    _this.removeActivePreviousSong( _this.getCurrentSong(),_this.getCurrentSongWave())
+                    const currentSong = $('[data-id="'+_this.currentIndex+'"]')
+                    const currentSongWave = $('[data-id="'+_this.currentIndex+'"] .wave')
+                    _this.removeActivePreviousSong(currentSong,currentSongWave)
                     let newIndex
                     do {
                         newIndex = Math.floor(Math.random() * _this.songs.length)
@@ -439,6 +435,8 @@ const app = {
 
                 // xử lý khi click vào bài hát
                 listSong.onclick = function(e) {
+                    const currentSong = $('[data-id="'+_this.currentIndex+'"]')
+                    const currentSongWave = $('[data-id="'+_this.currentIndex+'"] .wave')
                     const songNode = e.target.closest('.song:not(.activeSong)')
                     const optionNode =  e.target.closest('.moreInformation')
                     const img1Node = e.target.closest('.song.activeSong')
@@ -448,7 +446,7 @@ const app = {
                     }
                     if (songNode || optionNode) {
                         if (songNode && !optionNode){
-                            _this.removeActivePreviousSong( _this.getCurrentSong(),_this.getCurrentSongWave())
+                            _this.removeActivePreviousSong(currentSong,currentSongWave)
                             const songIndexByClick = Number(songNode.dataset.id)
                             _this.currentIndex = songIndexByClick
                             totalPlayMusicFunction()

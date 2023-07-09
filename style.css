@@ -371,9 +371,9 @@ input[type=range] {
     align-items: center;
     position: absolute;
     display: none;
-    height: 5.6rem;
+    height: 6rem;
     background-color: #7a7676;
-    width: 5.6rem;
+    width: 6rem;
     border-radius: 100%;
     opacity: 0.7;
 }
@@ -468,4 +468,9 @@ input[type=range] {
     .content .content__name {
         font-size: 1.6rem;
     }  
+
+    .wave {
+        width :5rem;
+        height :5rem;
+    }
 }
